@@ -1,0 +1,57 @@
+{
+  "name": "contract.erc-900",
+  "version": "1.0.0",
+  "description": "Contracts for Codex Protocol's Codex Registry",
+  "scripts": {
+    "clean": "rm -rf build",
+    "migrate": "npm run lint && truffle migrate --network ganache",
+    "migrate:reset": "npm run clean && npm run lint && truffle migrate --reset --network ganache",
+    "test": "truffle test --network ganache",
+    "lint": "npm run lint:js && npm run lint:sol",
+    "lint:js": "eslint .",
+    "lint:sol": "solium -d .",
+    "compile": "truffle compile",
+    "coverage": "./node_modules/.bin/solidity-coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codex-protocol/contract.erc-900"
+  },
+  "keywords": [
+    "codex"
+  ],
+  "author": "Codex Protocol <contact@codexprotocol.com>",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/codex-protocol/contract.erc-900/issues"
+  },
+  "homepage": "https://github.com/codex-protocol/contract.erc-900",
+  "devDependencies": {
+    "@codex-protocol/eslint-config-base": "latest",
+    "@codex-protocol/eslint-config-truffle": "latest",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^2.0.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "ganache-cli": "^6.1.0",
+    "solc": "0.4.24",
+    "solidity-coverage": "^0.5.4",
+    "solium": "^1.1.7"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "dotenv": "^5.0.1",
+    "ethereumjs-util": "^5.2.0",
+    "ethjs-abi": "^0.2.1",
+    "lodash": "^4.17.10",
+    "openzeppelin-solidity": "1.10.0",
+    "truffle": "4.1.11",
+    "truffle-hdwallet-provider": "0.0.3"
+  }
+}
