@@ -11,30 +11,28 @@ import "./ERC900.sol";
  * @title ERC900 Simple Staking Interface basic implementation
  * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-900.md
  */
-contract ERC900BasicStakeContainer is ERC900 {
+contract ERC900BasicStakeContract is ERC900 {
   // @TODO: deploy this separately so we don't have to deploy it multiple times for each contract
   using SafeMath for uint256;
 
   // Token used for staking
   ERC20 stakingToken;
 
-  // The default duration of stake lock-in (in seconds)
-  uint256 public defaultLockInDuration;
+  // The duration of stake lock-in (in seconds)
+  uint256 public lockInDuration;
 
   // To save on gas, rather than create a separate mapping for totalStakedFor & personalStakes,
   //  both data structures are stored in a single mapping for a given addresses.
   //
   // It's possible to have a non-existing personalStakes, but have tokens in totalStakedFor
   //  if other users are staking on behalf of a given address.
-  mapping (address => StakeContainer) public stakeHolders;
+  mapping (address => StakeContract) public stakeHolders;
 
   // Struct for personal stakes (i.e., stakes made by this address)
-  // lastUpdatedTimestamp - when the discountCredits of the stake was last updated
   // unlockedTimestamp - when the stake unlocks (in seconds since Unix epoch)
   // actualAmount - the amount of tokens in the stake
   // stakedFor - the address the stake was staked for
   struct Stake {
-    uint256 lastUpdatedTimestamp;
     uint256 unlockedTimestamp;
     uint256 actualAmount;
     address stakedFor;
@@ -43,10 +41,9 @@ contract ERC900BasicStakeContainer is ERC900 {
   // Struct for all stake metadata at a particular address
   // totalStakedFor - the number of tokens staked for this address
   // personalStakeIndex - the index in the personalStakes array.
-  // discountCredits - @TODO
   // personalStakes - append only array of stakes made by this address
   // exists - whether or not there are stakes that involve this address
-  struct StakeContainer {
+  struct StakeContract {
     uint256 totalStakedFor;
 
     uint256 personalStakeIndex;
@@ -128,7 +125,6 @@ contract ERC900BasicStakeContainer is ERC900 {
     createStake(
       msg.sender,
       _amount,
-      defaultLockInDuration,
       _data);
   }
 
@@ -143,7 +139,6 @@ contract ERC900BasicStakeContainer is ERC900 {
     createStake(
       _user,
       _amount,
-      defaultLockInDuration,
       _data);
   }
 
@@ -157,34 +152,8 @@ contract ERC900BasicStakeContainer is ERC900 {
    * @param _data bytes optional data to include in the Unstake event
    */
   function unstake(uint256 _amount, bytes _data) public {
-    Stake storage personalStake = stakeHolders[msg.sender].personalStakes[stakeHolders[msg.sender].personalStakeIndex];
-
-    // Check that the current stake has unlocked & matches the unstake amount
-    require(
-      personalStake.unlockedTimestamp <= block.timestamp,
-      "The current stake hasn't unlocked yet");
-
-    require(
-      personalStake.actualAmount == _amount,
-      "The unstake amount does not match the current stake");
-
-    // Transfer the staked tokens from this contract back to the sender
-    // Notice that we are using transfer instead of transferFrom here, so
-    //  no approval is needed beforehand.
-    require(
-      stakingToken.transfer(msg.sender, _amount),
-      "Unable to withdraw stake");
-
-    stakeHolders[personalStake.stakedFor].totalStakedFor = stakeHolders[personalStake.stakedFor]
-      .totalStakedFor.sub(personalStake.actualAmount);
-
-    personalStake.actualAmount = 0;
-    stakeHolders[msg.sender].personalStakeIndex++;
-
-    emit Unstaked(
-      msg.sender,
+    withdrawStake(
       _amount,
-      totalStakedFor(msg.sender),
       _data);
   }
 
@@ -235,18 +204,18 @@ contract ERC900BasicStakeContainer is ERC900 {
     public
     returns(uint256[], uint256[], address[])
   {
-    StakeContainer storage stakeContainer = stakeHolders[_address];
+    StakeContract storage stakeContract = stakeHolders[_address];
 
-    uint256 arraySize = stakeContainer.personalStakes.length - stakeContainer.personalStakeIndex;
+    uint256 arraySize = stakeContract.personalStakes.length - stakeContract.personalStakeIndex;
     uint256[] memory unlockedTimestamps = new uint256[](arraySize);
     uint256[] memory actualAmounts = new uint256[](arraySize);
     address[] memory stakedFor = new address[](arraySize);
 
-    for (uint256 i = stakeContainer.personalStakeIndex; i < stakeContainer.personalStakes.length; i++) {
-      uint256 index = i - stakeContainer.personalStakeIndex;
-      unlockedTimestamps[index] = stakeContainer.personalStakes[i].unlockedTimestamp;
-      actualAmounts[index] = stakeContainer.personalStakes[i].actualAmount;
-      stakedFor[index] = stakeContainer.personalStakes[i].stakedFor;
+    for (uint256 i = stakeContract.personalStakeIndex; i < stakeContract.personalStakes.length; i++) {
+      uint256 index = i - stakeContract.personalStakeIndex;
+      unlockedTimestamps[index] = stakeContract.personalStakes[i].unlockedTimestamp;
+      actualAmounts[index] = stakeContract.personalStakes[i].actualAmount;
+      stakedFor[index] = stakeContract.personalStakes[i].stakedFor;
     }
 
     return (
@@ -260,13 +229,11 @@ contract ERC900BasicStakeContainer is ERC900 {
    * @dev Helper function to create stakes for a given address
    * @param _address address The address the stake is being created for
    * @param _amount uint256 The number of tokens being staked
-   * @param _lockInDuration uint256 The duration to lock the tokens for
    * @param _data bytes The optional data emitted in the Staked event
    */
   function createStake(
     address _address,
     uint256 _amount,
-    uint256 _lockInDuration,
     bytes _data
   )
     internal
@@ -279,8 +246,7 @@ contract ERC900BasicStakeContainer is ERC900 {
     stakeHolders[_address].totalStakedFor = stakeHolders[_address].totalStakedFor.add(_amount);
     stakeHolders[msg.sender].personalStakes.push(
       Stake(
-        block.timestamp,
-        block.timestamp.add(_lockInDuration),
+        block.timestamp.add(lockInDuration),
         _amount,
         _address)
       );
@@ -289,6 +255,49 @@ contract ERC900BasicStakeContainer is ERC900 {
       _address,
       _amount,
       totalStakedFor(_address),
+      _data);
+  }
+
+  /**
+   * @dev Helper function to withdraw stakes for the msg.sender
+   * @param _amount uint256 The amount to withdraw. MUST match the stake amount for the
+   *  stake at personalStakeIndex.
+   * @param _data bytes The optional data emitted in the Unstaked event.
+   */
+  function withdrawStake(
+    uint256 _amount,
+    bytes _data
+  )
+    internal
+  {
+    Stake storage personalStake = stakeHolders[msg.sender].personalStakes[stakeHolders[msg.sender].personalStakeIndex];
+
+    // Check that the current stake has unlocked & matches the unstake amount
+    require(
+      personalStake.unlockedTimestamp <= block.timestamp,
+      "The current stake hasn't unlocked yet");
+
+    require(
+      personalStake.actualAmount == _amount,
+      "The unstake amount does not match the current stake");
+
+    // Transfer the staked tokens from this contract back to the sender
+    // Notice that we are using transfer instead of transferFrom here, so
+    //  no approval is needed beforehand.
+    require(
+      stakingToken.transfer(msg.sender, _amount),
+      "Unable to withdraw stake");
+
+    stakeHolders[personalStake.stakedFor].totalStakedFor = stakeHolders[personalStake.stakedFor]
+      .totalStakedFor.sub(personalStake.actualAmount);
+
+    personalStake.actualAmount = 0;
+    stakeHolders[msg.sender].personalStakeIndex++;
+
+    emit Unstaked(
+      msg.sender,
+      _amount,
+      totalStakedFor(msg.sender),
       _data);
   }
 }

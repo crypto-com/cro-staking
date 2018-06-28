@@ -1,3 +1,5 @@
+// MIT Licensed code from https://github.com/OpenZeppelin/openzeppelin-solidity
+
 export default async (promise) => {
   try {
     await promise
