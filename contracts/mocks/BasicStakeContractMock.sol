@@ -2,6 +2,7 @@ pragma solidity ^0.4.24;
 
 import "../ERC900/ERC900BasicStakeContract.sol";
 
+
 /**
  * @title BasicStakeContractMock
  */
