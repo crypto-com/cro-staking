@@ -8,11 +8,11 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should()
 
-export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDuration) {
+export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockInDuration) {
   const creator = accounts[0]
   const otherUser = accounts[1]
 
-  describe('like a BasicStakeContract', function () {
+  describe('like a ERC900BasicStakeContract', function () {
 
     describe('totalStaked', function () {
       it('should be 0 by default', async function () {

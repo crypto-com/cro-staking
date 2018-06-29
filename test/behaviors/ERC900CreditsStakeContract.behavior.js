@@ -8,7 +8,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should()
 
-export default function shouldBehaveLikeCreditsStakeContract(accounts) {
+export default function shouldBehaveLikeERC900CreditsStakeContract(accounts) {
 
   describe('like a CreditsStakeContract', function () {
     const creator = accounts[0]

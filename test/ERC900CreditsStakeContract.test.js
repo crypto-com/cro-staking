@@ -1,5 +1,5 @@
-import shouldBehaveLikeBasicStakeContract from './behaviors/BasicStakeContract.behavior'
-import shouldBehaveLikeCreditsStakeContract from './behaviors/CreditsStakeContract.behavior'
+import shouldBehaveLikeBasicStakeContract from './behaviors/ERC900BasicStakeContract.behavior'
+import shouldBehaveLikeCreditsStakeContract from './behaviors/ERC900CreditsStakeContract.behavior'
 
 const { BigNumber } = web3
 
@@ -11,7 +11,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should()
 
-contract('CreditsStakeContract', function (accounts) {
+contract('ERC900CreditsStakeContract', function (accounts) {
   const lockInDuration = 7776000
 
   beforeEach(async function () {
