@@ -2,14 +2,21 @@ pragma solidity ^0.4.24;
 
 import "./ERC900BasicStakeContract.sol";
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
 
 /**
  * @title ERC900 Credits-based staking implementation
  * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-900.md
+ *
  * Notice that credits aren't lost when tokens are unstaked--only when credits are spent.
- * This means that after the initial lock in duration is
+ * This means that after the initial lock in duration expires, a user can re-stake those tokens
+ *  for more credits.
+ * Another important note: spendCredits can only be called by the contract's owner. This
+ *  is meant to be another smart contract. For example, the smart contract can offer call
+ *  spendCredits to reduce a user's credit balance in place of spending real tokens.
  */
-contract ERC900CreditsStakeContract is ERC900BasicStakeContract {
+contract ERC900CreditsStakeContract is ERC900BasicStakeContract, Ownable {
 
   mapping (address => uint256) public creditBalances;
 
@@ -23,13 +30,12 @@ contract ERC900CreditsStakeContract is ERC900BasicStakeContract {
     return creditBalances[_user];
   }
 
-  // @TODO: This is a huge security hole right now because anyone can spend credits on other people's behalf.
-  //  We likely have to use ERC-20 mechanics here for allowance
   function spendCredits(
     address _user,
     uint256 _amount
   )
     public
+    onlyOwner
   {
     require(
       creditBalances[_user] > _amount,

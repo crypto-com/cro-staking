@@ -16,11 +16,11 @@ contract('CreditsStakeContract', function (accounts) {
 
   beforeEach(async function () {
     this.erc20Token = await Erc20Token.new()
-    this.stakeContainer = await CreditsStakeContract.new(this.erc20Token.address, lockInDuration)
+    this.stakeContract = await CreditsStakeContract.new(this.erc20Token.address, lockInDuration)
 
-    await this.erc20Token.approve(this.stakeContainer.address, web3.toWei(100, 'ether'))
+    await this.erc20Token.approve(this.stakeContract.address, web3.toWei(100, 'ether'))
   })
 
   shouldBehaveLikeBasicStakeContract(accounts, lockInDuration)
-  shouldBehaveLikeCreditsStakeContract()
+  shouldBehaveLikeCreditsStakeContract(accounts)
 })

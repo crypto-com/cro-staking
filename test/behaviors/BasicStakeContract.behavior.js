@@ -16,53 +16,53 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
 
     describe('totalStaked', function () {
       it('should be 0 by default', async function () {
-        const totalStaked = await this.stakeContainer.totalStaked()
+        const totalStaked = await this.stakeContract.totalStaked()
         totalStaked.should.be.bignumber.equal(0)
       })
     })
 
     describe('totalStakedFor', function () {
       it('should be 0 by default', async function () {
-        const totalStakedFor = await this.stakeContainer.totalStakedFor(creator)
+        const totalStakedFor = await this.stakeContract.totalStakedFor(creator)
         totalStakedFor.should.be.bignumber.equal(0)
       })
     })
 
     describe('token', function () {
       it('should return the address of the ERC20 token used for staking', async function () {
-        const tokenAddress = await this.stakeContainer.token()
+        const tokenAddress = await this.stakeContract.token()
         tokenAddress.should.be.equal(this.erc20Token.address)
       })
     })
 
     describe('supportsHistory', function () {
       it('should return false', async function () {
-        const supportsHistory = await this.stakeContainer.supportsHistory()
+        const supportsHistory = await this.stakeContract.supportsHistory()
         supportsHistory.should.be.equal(false)
       })
     })
 
     describe('defaultLockInDuration', function () {
       it('should be the value passed in the constructor', async function () {
-        const tokenLockInDuration = await this.stakeContainer.defaultLockInDuration()
+        const tokenLockInDuration = await this.stakeContract.defaultLockInDuration()
         tokenLockInDuration.should.be.bignumber.equal(lockInDuration)
       })
     })
 
     describe('when a user stakes tokens', function () {
       beforeEach(async function () {
-        await this.stakeContainer.stake(web3.toWei(1, 'ether'), 0x0)
+        await this.stakeContract.stake(web3.toWei(1, 'ether'), 0x0)
       })
 
       describe('totalStaked', function () {
         it('should increase', async function () {
-          const totalStaked = await this.stakeContainer.totalStaked()
+          const totalStaked = await this.stakeContract.totalStaked()
           totalStaked.should.be.bignumber.equal(web3.toWei(1, 'ether'))
         })
 
         it('should be equivalent to balanceOf on the token contract', async function () {
-          const totalStaked = await this.stakeContainer.totalStaked()
-          const balanceOf = await this.erc20Token.balanceOf(this.stakeContainer.address)
+          const totalStaked = await this.stakeContract.totalStaked()
+          const balanceOf = await this.erc20Token.balanceOf(this.stakeContract.address)
           totalStaked.should.be.bignumber.equal(balanceOf)
         })
 
@@ -70,21 +70,21 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
           await this.erc20Token.transfer(otherUser, web3.toWei(50, 'ether'))
 
           await this.erc20Token.approve(
-            this.stakeContainer.address,
+            this.stakeContract.address,
             web3.toWei(100, 'ether'),
             { from: otherUser }
           )
 
-          await this.stakeContainer.stake(web3.toWei(1, 'ether'), 0x0, { from: otherUser })
+          await this.stakeContract.stake(web3.toWei(1, 'ether'), 0x0, { from: otherUser })
 
-          const totalStaked = await this.stakeContainer.totalStaked()
+          const totalStaked = await this.stakeContract.totalStaked()
           totalStaked.should.be.bignumber.equal(web3.toWei(2, 'ether'))
         })
       })
 
       describe('totalStakedFor', function () {
         it('should increase', async function () {
-          const totalStakedFor = await this.stakeContainer.totalStakedFor(creator)
+          const totalStakedFor = await this.stakeContract.totalStakedFor(creator)
           totalStakedFor.should.be.bignumber.equal(web3.toWei(1, 'ether'))
         })
 
@@ -92,19 +92,19 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
           await this.erc20Token.transfer(otherUser, web3.toWei(50, 'ether'))
 
           await this.erc20Token.approve(
-            this.stakeContainer.address,
+            this.stakeContract.address,
             web3.toWei(100, 'ether'),
             { from: otherUser }
           )
 
-          await this.stakeContainer.stakeFor(
+          await this.stakeContract.stakeFor(
             creator,
             web3.toWei(1, 'ether'),
             0x0,
             { from: otherUser }
           )
 
-          const totalStakedFor = await this.stakeContainer.totalStakedFor(creator)
+          const totalStakedFor = await this.stakeContract.totalStakedFor(creator)
           totalStakedFor.should.be.bignumber.equal(web3.toWei(2, 'ether'))
         })
       })
@@ -112,22 +112,22 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
       describe('and then unstakes tokens', function () {
         beforeEach(async function () {
           // Changing the timestamp of the next block so the stake is unlocked
-          const tokenLockInDuration = await this.stakeContainer.defaultLockInDuration()
+          const tokenLockInDuration = await this.stakeContract.defaultLockInDuration()
           await increaseTime(tokenLockInDuration.toNumber())
 
-          await this.stakeContainer.unstake(web3.toWei(1, 'ether'), 0x0)
+          await this.stakeContract.unstake(web3.toWei(1, 'ether'), 0x0)
         })
 
         describe('totalStaked', function () {
           it('should decrease', async function () {
-            const totalStaked = await this.stakeContainer.totalStaked()
+            const totalStaked = await this.stakeContract.totalStaked()
             totalStaked.should.be.bignumber.equal(0)
           })
         })
 
         describe('totalStakedFor', function () {
           it('should decrease', async function () {
-            const totalStakedFor = await this.stakeContainer.totalStakedFor(creator)
+            const totalStakedFor = await this.stakeContract.totalStakedFor(creator)
             totalStakedFor.should.be.bignumber.equal(0)
           })
         })
@@ -141,21 +141,21 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
         let tx
 
         beforeEach(async function () {
-          tx = await this.stakeContainer.stake(stakeAmount, 0x0)
+          tx = await this.stakeContract.stake(stakeAmount, 0x0)
           const { blockNumber } = tx.logs[0]
           blockTimestamp = web3.eth.getBlock(blockNumber).timestamp
         })
 
         it('should create a new personal stake with the correct properties', async function () {
-          const personalStakeUnlockedTimestamps = await this.stakeContainer.getPersonalStakeUnlockedTimestamps(creator)
+          const personalStakeUnlockedTimestamps = await this.stakeContract.getPersonalStakeUnlockedTimestamps(creator)
           personalStakeUnlockedTimestamps.length.should.be.bignumber.equal(1)
           personalStakeUnlockedTimestamps[0].should.be.bignumber.equal(blockTimestamp + lockInDuration)
 
-          const personalStakeForAddresses = await this.stakeContainer.getPersonalStakeForAddresses(creator)
+          const personalStakeForAddresses = await this.stakeContract.getPersonalStakeForAddresses(creator)
           personalStakeForAddresses.length.should.be.bignumber.equal(1)
           personalStakeForAddresses[0].should.be.equal(creator)
 
-          const personalStakeAmounts = await this.stakeContainer.getPersonalStakeActualAmounts(creator)
+          const personalStakeAmounts = await this.stakeContract.getPersonalStakeActualAmounts(creator)
           personalStakeAmounts.length.should.be.bignumber.equal(1)
           personalStakeAmounts[0].should.be.bignumber.equal(stakeAmount)
         })
@@ -174,15 +174,15 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
 
       describe('when multiple stakes are created', function () {
         it('should allow a user to create multiple stakes', async function () {
-          await this.stakeContainer.stake(web3.toWei(1, 'ether'), 0x0)
+          await this.stakeContract.stake(web3.toWei(1, 'ether'), 0x0)
         })
       })
 
       it('should revert when the contract is not approved', async function () {
-        await this.erc20Token.decreaseApproval(this.stakeContainer.address, web3.toWei(100, 'ether'))
+        await this.erc20Token.decreaseApproval(this.stakeContract.address, web3.toWei(100, 'ether'))
 
         await assertRevert(
-          this.stakeContainer.stake(web3.toWei(1, 'ether'), 0x0)
+          this.stakeContract.stake(web3.toWei(1, 'ether'), 0x0)
         )
       })
     })
@@ -194,23 +194,23 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
         let tx
 
         beforeEach(async function () {
-          originalTotalStakedFor = await this.stakeContainer.totalStakedFor(creator)
-          tx = await this.stakeContainer.stakeFor(otherUser, stakeAmount, 0x0)
+          originalTotalStakedFor = await this.stakeContract.totalStakedFor(creator)
+          tx = await this.stakeContract.stakeFor(otherUser, stakeAmount, 0x0)
         })
 
         it('should create a personal stake for the staker', async function () {
-          const personalStakeForAddresses = await this.stakeContainer.getPersonalStakeForAddresses(creator)
+          const personalStakeForAddresses = await this.stakeContract.getPersonalStakeForAddresses(creator)
           personalStakeForAddresses.length.should.be.bignumber.equal(1)
           personalStakeForAddresses[0].should.be.equal(otherUser)
         })
 
         it('should not change the number of tokens staked for the user', async function () {
-          const totalStakedFor = await this.stakeContainer.totalStakedFor(creator)
+          const totalStakedFor = await this.stakeContract.totalStakedFor(creator)
           totalStakedFor.should.be.bignumber.equal(originalTotalStakedFor)
         })
 
         it('should increase the number of tokens staked for the other user', async function () {
-          const totalStakedForOtherUser = await this.stakeContainer.totalStakedFor(otherUser)
+          const totalStakedForOtherUser = await this.stakeContract.totalStakedFor(otherUser)
           totalStakedForOtherUser.should.be.bignumber.equal(stakeAmount)
         })
 
@@ -229,13 +229,13 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
 
     describe('unstake', function () {
       beforeEach(async function () {
-        await this.stakeContainer.stake(web3.toWei(10, 'ether'), 0x0)
+        await this.stakeContract.stake(web3.toWei(10, 'ether'), 0x0)
       })
 
       describe('when the stake is locked', function () {
         it('should revert', async function () {
           await assertRevert(
-            this.stakeContainer.unstake(web3.toWei(10, 'ether'), 0x0)
+            this.stakeContract.unstake(web3.toWei(10, 'ether'), 0x0)
           )
         })
       })
@@ -243,7 +243,7 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
       describe('when the unstake amount is incorrect', function () {
         it('should revert', async function () {
           await assertRevert(
-            this.stakeContainer.unstake(web3.toWei(1, 'ether'), 0x0)
+            this.stakeContract.unstake(web3.toWei(1, 'ether'), 0x0)
           )
         })
       })
@@ -254,11 +254,11 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
           await this.erc20Token.pause()
 
           // Changing the timestamp of the next block so the stake is unlocked
-          const tokenLockInDuration = await this.stakeContainer.defaultLockInDuration()
+          const tokenLockInDuration = await this.stakeContract.defaultLockInDuration()
           await increaseTime(tokenLockInDuration.toNumber())
 
           await assertRevert(
-            this.stakeContainer.unstake(web3.toWei(10, 'ether'), 0x0)
+            this.stakeContract.unstake(web3.toWei(10, 'ether'), 0x0)
           )
         })
       })
@@ -269,12 +269,12 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
         let originalBalance
 
         beforeEach(async function () {
-          const tokenLockInDuration = await this.stakeContainer.defaultLockInDuration()
+          const tokenLockInDuration = await this.stakeContract.defaultLockInDuration()
           await increaseTime(tokenLockInDuration.toNumber())
 
           originalBalance = await this.erc20Token.balanceOf(creator)
 
-          tx = await this.stakeContainer.unstake(unstakeAmount, 0x0)
+          tx = await this.stakeContract.unstake(unstakeAmount, 0x0)
         })
 
         it('should emit an Unstaked event', async function () {
@@ -289,7 +289,7 @@ export default function shouldBehaveLikeBasicStakeContract(accounts, lockInDurat
         })
 
         it('should decrement the number of the personal stakes', async function () {
-          const personalStakeUnlockedTimestamps = await this.stakeContainer.getPersonalStakeUnlockedTimestamps(creator)
+          const personalStakeUnlockedTimestamps = await this.stakeContract.getPersonalStakeUnlockedTimestamps(creator)
           personalStakeUnlockedTimestamps.length.should.be.bignumber.equal(0)
         })
 
