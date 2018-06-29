@@ -23,6 +23,8 @@ contract ERC900CreditsStakeContract is ERC900BasicStakeContract {
     return creditBalances[_user];
   }
 
+  // @TODO: This is a huge security hole right now because anyone can spend credits on other people's behalf.
+  //  We likely have to use ERC-20 mechanics here for allowance
   function spendCredits(
     address _user,
     uint256 _amount
