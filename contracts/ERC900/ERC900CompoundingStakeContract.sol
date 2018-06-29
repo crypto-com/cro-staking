@@ -3,6 +3,8 @@ pragma solidity ^0.4.24;
 
 import "./ERC900BasicStakeContract.sol";
 
+// @TODO: Actually implement & test this
+
 
 /**
  * @title ERC900 Simple Staking Interface basic implementation
