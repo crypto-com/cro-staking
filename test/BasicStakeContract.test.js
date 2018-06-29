@@ -51,9 +51,9 @@ contract('BasicStakeContract', function (accounts) {
     })
   })
 
-  describe('lockInDuration', function () {
+  describe('defaultLockInDuration', function () {
     it('should be the value passed in the constructor', async function () {
-      const tokenLockInDuration = await this.stakeContainer.lockInDuration()
+      const tokenLockInDuration = await this.stakeContainer.defaultLockInDuration()
       tokenLockInDuration.should.be.bignumber.equal(lockInDuration)
     })
   })

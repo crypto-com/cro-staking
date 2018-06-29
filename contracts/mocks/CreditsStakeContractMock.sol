@@ -1,12 +1,12 @@
 pragma solidity ^0.4.24;
 
-import "../ERC900/ERC900BasicStakeContract.sol";
+import "../ERC900/ERC900CreditsStakeContract.sol";
 
 
 /**
- * @title BasicStakeContractMock
+ * @title CreditsStakeContract
  */
-contract BasicStakeContractMock is ERC900BasicStakeContract {
+contract CreditsStakeContract is ERC900CreditsStakeContract {
   /**
    * @dev Constructor function
    * @param _stakingToken ERC20 The address of the token used for staking

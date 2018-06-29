@@ -19,7 +19,7 @@ contract ERC900BasicStakeContract is ERC900 {
   ERC20 stakingToken;
 
   // The duration of stake lock-in (in seconds)
-  uint256 public lockInDuration;
+  uint256 public defaultLockInDuration;
 
   // To save on gas, rather than create a separate mapping for totalStakedFor & personalStakes,
   //  both data structures are stored in a single mapping for a given addresses.
@@ -125,6 +125,13 @@ contract ERC900BasicStakeContract is ERC900 {
     createStake(
       msg.sender,
       _amount,
+      defaultLockInDuration);
+
+    // Events are emitted within the public functions instead of the internal helpers to make inheritance easier
+    emit Staked(
+      msg.sender,
+      _amount,
+      totalStakedFor(msg.sender),
       _data);
   }
 
@@ -139,6 +146,13 @@ contract ERC900BasicStakeContract is ERC900 {
     createStake(
       _user,
       _amount,
+      defaultLockInDuration);
+
+    // Events are emitted within the public functions instead of the internal helpers to make inheritance easier
+    emit Staked(
+      _user,
+      _amount,
+      totalStakedFor(_user),
       _data);
   }
 
@@ -152,8 +166,13 @@ contract ERC900BasicStakeContract is ERC900 {
    * @param _data bytes optional data to include in the Unstake event
    */
   function unstake(uint256 _amount, bytes _data) public {
-    withdrawStake(
+    withdrawStake(_amount);
+
+    // Events are emitted within the public functions instead of the internal helpers to make inheritance easier
+    emit Unstaked(
+      msg.sender,
       _amount,
+      totalStakedFor(msg.sender),
       _data);
   }
 
@@ -229,12 +248,12 @@ contract ERC900BasicStakeContract is ERC900 {
    * @dev Helper function to create stakes for a given address
    * @param _address address The address the stake is being created for
    * @param _amount uint256 The number of tokens being staked
-   * @param _data bytes The optional data emitted in the Staked event
+   * @param _lockInDuration uint256 The duration to lock the tokens for
    */
   function createStake(
     address _address,
     uint256 _amount,
-    bytes _data
+    uint256 _lockInDuration
   )
     internal
     canStake(msg.sender, _amount)
@@ -246,27 +265,19 @@ contract ERC900BasicStakeContract is ERC900 {
     stakeHolders[_address].totalStakedFor = stakeHolders[_address].totalStakedFor.add(_amount);
     stakeHolders[msg.sender].personalStakes.push(
       Stake(
-        block.timestamp.add(lockInDuration),
+        block.timestamp.add(_lockInDuration),
         _amount,
         _address)
       );
-
-    emit Staked(
-      _address,
-      _amount,
-      totalStakedFor(_address),
-      _data);
   }
 
   /**
    * @dev Helper function to withdraw stakes for the msg.sender
    * @param _amount uint256 The amount to withdraw. MUST match the stake amount for the
    *  stake at personalStakeIndex.
-   * @param _data bytes The optional data emitted in the Unstaked event.
    */
   function withdrawStake(
-    uint256 _amount,
-    bytes _data
+    uint256 _amount
   )
     internal
   {
@@ -293,11 +304,5 @@ contract ERC900BasicStakeContract is ERC900 {
 
     personalStake.actualAmount = 0;
     stakeHolders[msg.sender].personalStakeIndex++;
-
-    emit Unstaked(
-      msg.sender,
-      _amount,
-      totalStakedFor(msg.sender),
-      _data);
   }
 }
