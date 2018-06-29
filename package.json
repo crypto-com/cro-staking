@@ -1,12 +1,14 @@
 {
   "name": "contract.erc-900",
   "version": "1.0.0",
-  "description": "Contracts for Codex Protocol's Codex Registry",
+  "description": "ERC-900 Contracts",
   "scripts": {
     "clean": "rm -rf build",
     "migrate": "npm run lint && truffle migrate --network ganache",
     "migrate:reset": "npm run clean && npm run lint && truffle migrate --reset --network ganache",
     "test": "truffle test --network ganache",
+    "test:travis": "npm run ganache-cli && truffle test",
+    "ganache-cli": "ganache-cli > /dev/null &",
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:js": "eslint .",
     "lint:sol": "solium -d .",
@@ -17,9 +19,6 @@
     "type": "git",
     "url": "https://github.com/codex-protocol/contract.erc-900"
   },
-  "keywords": [
-    "codex"
-  ],
   "author": "Codex Protocol <contact@codexprotocol.com>",
   "license": "AGPL-3.0-or-later",
   "bugs": {
