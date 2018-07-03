@@ -1,4 +1,3 @@
-import assertRevert from '../helpers/assertRevert'
 import increaseTime from '../helpers/increaseTime'
 
 const { BigNumber } = web3
