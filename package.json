@@ -8,6 +8,7 @@
     "migrate:reset": "npm run clean && npm run lint && truffle migrate --reset --network ganache",
     "test": "truffle test --network ganache",
     "test:credits": "truffle test --network ganache ./test/ERC900CreditsStakeContract.test.js",
+    "test:compounding": "truffle test --network ganache ./test/ERC900CompoundingStakeContract.test.js",
     "test:travis": "npm run ganache-cli && truffle test",
     "ganache-cli": "ganache-cli > /dev/null &",
     "lint": "npm run lint:js && npm run lint:sol",

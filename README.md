@@ -11,3 +11,23 @@ For example, at Codex Protocol we're using this concept so that users can stake 
 ## Contracts
 - ERC900.sol - ERC-900 interface
 - ERC900BasicStakeContract.sol - A basic implementation of the ERC-900 interface following the principle outlined above.
+- ERC900CompoundingStakeContract.sol - An interest-based approach, where users stake tokens and the perceived value of the stakes can accrue over time via interest.
+- ERC900CreditsStakeContract.sol - A credits-based approach, where users stake tokens and are rewarded with credits.
+
+## Code coverage
+
+```
+-------------------------------------|----------|----------|----------|----------|----------------|
+File                                 |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+-------------------------------------|----------|----------|----------|----------|----------------|
+ ERC900/                             |      100 |    94.44 |      100 |      100 |                |
+  ERC900.sol                         |      100 |      100 |      100 |      100 |                |
+  ERC900BasicStakeContract.sol       |      100 |       90 |      100 |      100 |                |
+  ERC900CompoundingStakeContract.sol |      100 |      100 |      100 |      100 |                |
+  ERC900CreditsStakeContract.sol     |      100 |      100 |      100 |      100 |                |
+ library/                            |      100 |      100 |      100 |      100 |                |
+  Debuggable.sol                     |      100 |      100 |      100 |      100 |                |
+-------------------------------------|----------|----------|----------|----------|----------------|
+All files                            |      100 |    94.44 |      100 |      100 |                |
+-------------------------------------|----------|----------|----------|----------|----------------|
+```
