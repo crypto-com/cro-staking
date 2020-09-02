@@ -202,8 +202,8 @@ contract ERC900BasicStakeContract is ERC900 {
   function getPersonalStakes(
     address _address
   )
-    view
     public
+    view
     returns(uint256[], uint256[], address[])
   {
     StakeContract storage stakeContract = stakeHolders[_address];

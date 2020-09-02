@@ -4,17 +4,17 @@
   "description": "ERC-900 Contracts",
   "scripts": {
     "clean": "rm -rf build",
-    "migrate": "npm run lint && truffle migrate --network ganache",
-    "migrate:reset": "npm run clean && npm run lint && truffle migrate --reset --network ganache",
-    "test": "truffle test --network ganache",
-    "test:credits": "truffle test --network ganache ./test/ERC900CreditsStakeContract.test.js",
-    "test:compounding": "truffle test --network ganache ./test/ERC900CompoundingStakeContract.test.js",
-    "test:travis": "npm run ganache-cli && truffle test",
+    "migrate": "npm run lint && ./node_modules/.bin/truffle migrate --network ganache",
+    "migrate:reset": "npm run clean && npm run lint && ./node_modules/.bin/truffle migrate --reset --network ganache",
+    "test": "./node_modules/.bin/truffle test --network ganache",
+    "test:credits": "./node_modules/.bin/truffle test --network ganache ./test/ERC900CreditsStakeContract.test.js",
+    "test:compounding": "./node_modules/.bin/truffle test --network ganache ./test/ERC900CompoundingStakeContract.test.js",
+    "test:travis": "npm run ganache-cli && ./node_modules/.bin/truffle test",
     "ganache-cli": "ganache-cli > /dev/null &",
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:js": "eslint .",
     "lint:sol": "solium -d .",
-    "compile": "truffle compile",
+    "compile": "./node_modules/.bin/truffle compile",
     "coverage": "./node_modules/.bin/solidity-coverage"
   },
   "repository": {
@@ -39,6 +39,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
     "ganache-cli": "^6.1.0",
+    "git-hooks": "^1.1.10",
     "solc": "0.4.24",
     "solidity-coverage": "^0.5.4",
     "solium": "^1.1.7"
@@ -52,7 +53,7 @@
     "ethjs-abi": "^0.2.1",
     "lodash": "^4.17.10",
     "openzeppelin-solidity": "1.10.0",
-    "truffle": "4.1.11",
+    "truffle": "^4.1.7",
     "truffle-hdwallet-provider": "0.0.3"
   }
 }

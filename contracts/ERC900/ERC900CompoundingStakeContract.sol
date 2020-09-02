@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 
 import "./ERC900BasicStakeContract.sol";
 
+
 /**
  * @title ERC900 Simple Staking Interface basic implementation
  * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-900.md
