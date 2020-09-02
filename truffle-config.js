@@ -34,7 +34,7 @@ module.exports = {
       gasPrice: 0x01,
     },
     ganache: {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 8545,
       network_id: '*',
       gasPrice: 0x01,
@@ -52,7 +52,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.4.26',
+      version: '0.4.25',
       settings: {
         optimizer: {
           enabled: true,
