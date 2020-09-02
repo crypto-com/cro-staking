@@ -6,7 +6,7 @@
     "clean": "rm -rf build",
     "migrate": "npm run lint && ./node_modules/.bin/truffle migrate --network ganache --reset",
     "migrate:reset": "npm run clean && npm run lint && ./node_modules/.bin/truffle migrate --reset --network ganache",
-    "test": "./node_modules/.bin/truffle test --network ganache",
+    "test": "./node_modules/.bin/truffle migrate --network test --reset && ./node_modules/.bin/truffle test --network test",
     "test:credits": "./node_modules/.bin/truffle test --network ganache ./test/ERC900CreditsStakeContract.test.js",
     "test:compounding": "./node_modules/.bin/truffle test --network ganache ./test/ERC900CompoundingStakeContract.test.js",
     "test:travis": "npm run ganache-cli && ./node_modules/.bin/truffle test",
