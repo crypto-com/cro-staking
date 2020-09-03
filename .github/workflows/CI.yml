@@ -31,7 +31,7 @@ jobs:
 
       - run: yarn
       - run: yarn lint
-#      - run: yarn test # TODO ENABLE ME WHEN FIXED!
+      - run: yarn test
   deploy-ganache:
     runs-on: ubuntu-latest
     name: Deploy to Ganache
