@@ -190,7 +190,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
         })
       })
 
-      it('should revert when the contract is not approved', async function () {
+      it.only('should revert when the contract is not approved', async function () {
+
         await this.erc20Token.decreaseApproval(this.stakeContract.address, web3.utils.toWei('100', 'ether'))
 
         await assertRevert(
