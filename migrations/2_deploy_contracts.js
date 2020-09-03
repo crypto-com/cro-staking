@@ -1,9 +1,9 @@
-const ERC20 = artifacts.require('@openzeppelin-solidity/contracts/token/ERC20/StandardToken')
+const ERC20 = artifacts.require('PausableTokenMock')
 // TODO change from BasicStakeContractMock to something more proper if needed
 const ERC900BasicStakeContract = artifacts.require('BasicStakeContractMock')
 module.exports = function (deployer, network, accounts) {
   // only for local network, deploy a plain ERC20
-  if (['development', 'ganache'].indexOf(network) > -1) {
+  if (['development', 'ganache', 'ropsten'].indexOf(network) > -1) {
 
     deployer.deploy(ERC20, { gas: 6721970 }).then(async () => {
       console.log(`Deployed ERC20 token address : ${ERC20.address}`)
