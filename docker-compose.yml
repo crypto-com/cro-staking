@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  ganache-cli:
+    image: trufflesuite/ganache-cli:v6.1.2
+    command: "--gasLimit 10000000"
+    ports:
+      - 8545:8545

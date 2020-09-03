@@ -1,16 +1,16 @@
 pragma solidity ^0.4.24;
 
-import "../ERC900/ERC900CreditsStakeContract.sol";
+import "./ERC900BasicStakeContract.sol";
 
 
 /**
- * @title CreditsStakeContract
+ * @title BasicStakingContract
  */
-contract CreditsStakeContract is ERC900CreditsStakeContract {
+contract BasicStakingContract is ERC900BasicStakeContract {
   /**
    * @dev Constructor function
    * @param _stakingToken ERC20 The address of the token used for staking
-   * @param _lockInDuration uint256 The default duration (in seconds) that stakes are created with
+   * @param _lockInDuration uint256 The duration (in seconds) that stakes are required to be locked for
    */
   constructor(
     ERC20 _stakingToken,
