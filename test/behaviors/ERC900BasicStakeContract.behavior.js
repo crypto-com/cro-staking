@@ -136,6 +136,14 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
     })
 
     describe('stake', function () {
+      describe('should do input validation on amount', function () {
+        it('should revert when staking zero amount', async function () {
+          await assertRevert(
+            this.stakeContract.stake('0', dummyData), 'Stake amount has to be greater than 0!'
+          )
+        })
+      })
+
       describe('when a single stake is created', function () {
         const stakeAmount = web3.utils.toWei('1', 'ether')
         let blockTimestamp
@@ -186,7 +194,7 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
         await this.erc20Token.decreaseApproval(this.stakeContract.address, web3.utils.toWei('100', 'ether'))
 
         await assertRevert(
-          this.stakeContract.stake(web3.utils.toWei('1', 'ether'), dummyData)
+          this.stakeContract.stake(web3.utils.toWei('1', 'ether'), dummyData), 'Stake required'
         )
       })
     })
@@ -239,7 +247,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
       describe('when the stake is locked', function () {
         it('should revert', async function () {
           await assertRevert(
-            this.stakeContract.unstake(web3.utils.toWei('10', 'ether'), dummyData)
+            this.stakeContract.unstake(web3.utils.toWei('10', 'ether'), dummyData),
+            'The current stake hasn\'t unlocked yet'
           )
         })
       })
@@ -248,6 +257,7 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
         it('should revert', async function () {
           await assertRevert(
             this.stakeContract.unstake(web3.utils.toWei('1', 'ether'), dummyData)
+            , 'The unstake amount does not match the current stake'
           )
         })
       })
@@ -262,7 +272,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
           await increaseTime(tokenLockInDuration.toNumber())
 
           await assertRevert(
-            this.stakeContract.unstake(web3.utils.toWei('10', 'ether'), dummyData)
+            this.stakeContract.unstake(web3.utils.toWei('10', 'ether'), dummyData),
+            'Unable to withdraw stake'
           )
         })
       })
