@@ -11,7 +11,7 @@ require('chai')
 export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockInDuration) {
   const creator = accounts[0]
   const otherUser = accounts[1]
-  const dummyData = '0xabcd';
+  const dummyData = '0xabcd'
 
   describe('like a ERC900BasicStakeContract', function () {
 
