@@ -137,7 +137,7 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
 
     describe('stake', function () {
       describe('should do input validation on amount', function () {
-        it('should revert when staking zero amount', async function () {
+        it.only('should revert when staking zero amount', async function () {
           await assertRevert(
             this.stakeContract.stake('0', dummyData), 'Stake amount has to be greater than 0!'
           )
