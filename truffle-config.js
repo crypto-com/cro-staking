@@ -1,17 +1,17 @@
 require('babel-register')
 require('babel-polyfill')
 
-const dotenv = require('dotenv')
-const HDWalletProvider = require('@truffle/hdwallet-provider')
-
-dotenv.config()
-
-const infuraProvider = (network) => {
-  return new HDWalletProvider(
-    process.env.MNEMONIC,
-    `https://${network}.infura.io/v3/${process.env.INFURA_API_KEY}`
-  )
-}
+// const dotenv = require('dotenv')
+// const HDWalletProvider = require('@truffle/hdwallet-provider')
+//
+// dotenv.config()
+//
+// const infuraProvider = (network) => {
+//   return new HDWalletProvider(
+//     process.env.MNEMONIC,
+//     `https://${network}.infura.io/v3/${process.env.INFURA_API_KEY}`
+//   )
+// }
 
 module.exports = {
   networks: {
@@ -39,16 +39,16 @@ module.exports = {
       network_id: '*',
       gasPrice: 0x01,
     },
-    ropsten: {
-      provider: infuraProvider('ropsten'),
-      network_id: '3',
-      gasPrice: 5000000000, // 5 gwei
-    },
-    rinkeby: {
-      provider: infuraProvider('rinkeby'),
-      network_id: '4',
-      gasPrice: 5000000000, // 5 gwei
-    },
+    // ropsten: {
+    //   provider: infuraProvider('ropsten'),
+    //   network_id: '3',
+    //   gasPrice: 5000000000, // 5 gwei
+    // },
+    // rinkeby: {
+    //   provider: infuraProvider('rinkeby'),
+    //   network_id: '4',
+    //   gasPrice: 5000000000, // 5 gwei
+    // },
   },
   compilers: {
     solc: {
