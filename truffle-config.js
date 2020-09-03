@@ -2,10 +2,10 @@ require('babel-register')
 require('babel-polyfill')
 
 // const dotenv = require('dotenv')
-// const HDWalletProvider = require('truffle-hdwallet-provider')
-
+// const HDWalletProvider = require('@truffle/hdwallet-provider')
+//
 // dotenv.config()
-
+//
 // const infuraProvider = (network) => {
 //   return new HDWalletProvider(
 //     process.env.MNEMONIC,
