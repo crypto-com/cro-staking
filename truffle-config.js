@@ -21,14 +21,14 @@ module.exports = {
       network_id: '*',
     },
     coverage: {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 8555,
       network_id: '*',
       gas: 0xfffffffffff,
       gasPrice: 0x01,
     },
     test: {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 8545,
       network_id: '*',
       gasPrice: 0x01,
