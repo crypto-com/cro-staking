@@ -49,6 +49,11 @@ module.exports = {
     //   network_id: '4',
     //   gasPrice: 5000000000, // 5 gwei
     // },
+    // mainnet: {
+    //   provider: infuraProvider('rinkeby'),
+    //   network_id: '1',
+    //   gasPrice: 50000000000, // 50 gwei
+    // },
   },
   compilers: {
     solc: {
@@ -61,4 +66,5 @@ module.exports = {
       },
     },
   },
+  plugins: ['solidity-coverage'],
 }

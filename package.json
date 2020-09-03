@@ -7,22 +7,21 @@
     "migrate": "npm run lint && ./node_modules/.bin/truffle migrate --network ganache --reset",
     "migrate:reset": "npm run clean && npm run lint && ./node_modules/.bin/truffle migrate --reset --network ganache",
     "test": "./node_modules/.bin/truffle migrate --network test --reset && ./node_modules/.bin/truffle test --network test",
-    "test:credits": "./node_modules/.bin/truffle test --network test ./test/ERC900CreditsStakeContract.test.js",
-    "test:compounding": "./node_modules/.bin/truffle test --network test ./test/ERC900CompoundingStakeContract.test.js",
     "test:travis": "npm run ganache-cli && ./node_modules/.bin/truffle test",
     "ganache-cli": "ganache-cli > /dev/null &",
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:js": "eslint .",
     "lint:sol": "solium -d .",
     "compile": "./node_modules/.bin/truffle compile",
-    "coverage": "./node_modules/.bin/solidity-coverage",
-    "deploy-on-ropsten": "npm run lint && ./node_modules/.bin/truffle migrate --network ropsten --reset"
+    "coverage": "./node_modules/.bin/truffle run coverage",
+    "deploy-on-ropsten": "npm run lint && ./node_modules/.bin/truffle migrate --network ropsten --reset",
+    "deploy-on-mainnet": "npm run lint && ./node_modules/.bin/truffle migrate --network mainnet --reset"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/codex-protocol/contract.erc-900"
   },
-  "author": "Codex Protocol <contact@codexprotocol.com>",
+  "author": "chain@crypto.com",
   "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/codex-protocol/contract.erc-900/issues"
