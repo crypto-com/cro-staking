@@ -21,7 +21,7 @@ module.exports = async function (deployer, network, accounts) {
     await deployer.deploy(ERC900BasicStakeContract, deployedTokenOnRopsten, ONE_YEAR_IN_SECONDS * 3, { gas: 6721970 })
     deployer.deploy(ERC900BasicStakeContract, deployedTokenOnRopsten, ONE_YEAR_IN_SECONDS * 4, { gas: 6721970 })
 
-  } else if(network === 'mainnet') {
+  } else if (network === 'mainnet') {
     const croTokenOnMainnet = '0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b'
     await deployer.deploy(ERC900BasicStakeContract, croTokenOnMainnet, ONE_YEAR_IN_SECONDS, { gas: 6721970 })
     await deployer.deploy(ERC900BasicStakeContract, croTokenOnMainnet, ONE_YEAR_IN_SECONDS * 2, { gas: 6721970 })
