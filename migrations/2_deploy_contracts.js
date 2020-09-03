@@ -1,6 +1,5 @@
 const ERC20 = artifacts.require('PausableTokenMock')
-// TODO change from BasicStakeContractMock to something more proper if needed
-const ERC900BasicStakeContract = artifacts.require('BasicStakeContractMock')
+const ERC900BasicStakeContract = artifacts.require('BasicStakingContract')
 module.exports = async function (deployer, network, accounts) {
   // only for local network, deploy a plain ERC20
   if (['development', 'ganache'].indexOf(network) > -1) {
