@@ -194,9 +194,9 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
         await this.erc20Token.decreaseApproval(this.stakeContract.address, web3.utils.toWei('100', 'ether'))
 
         await assertRevert(
-          this.stakeContract.stake(web3.utils.toWei('1', 'ether'), dummyData),
+          this.stakeContract.stake.sendTransaction(web3.utils.toWei('1', 'ether'), dummyData),
           // FIXME express expected error message
-          // 'Stake required'
+          'Stake required'
         )
       })
     })
