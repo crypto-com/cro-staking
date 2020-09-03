@@ -1,7 +1,7 @@
 # Crop Swap | ERC 900 Contracts
 [![Build Status](https://github.com/crypto-com/cro-staking/actions/runs/237971754)](https://github.com/crypto-com/cro-staking/actions/runs/237971754)
 
-*Inspired by Codex Protocol | ERC 900 Contracts*
+*Inspired by [Codex Protocol | ERC 900 Contracts](https://github.com/codex-protocol/contract.erc-900)*
 
 ## Background
 For background on ERC-900 itself, view the issue in the EIP repo here: https://github.com/ethereum/EIPs/issues/900
