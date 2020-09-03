@@ -160,7 +160,6 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
           const personalStakeUnlockedTimestamps = await this.stakeContract.getPersonalStakeUnlockedTimestamps(creator)
           personalStakeUnlockedTimestamps.length.should.eq(1)
 
-          console.log(`personalStakeUnlockedTimestamps: ${personalStakeUnlockedTimestamps} blockTimestamp ${blockTimestamp} lockInDuration ${lockInDuration}`)
           personalStakeUnlockedTimestamps[0].should.be.a.bignumber.that.equals((blockTimestamp + lockInDuration).toString())
 
           const personalStakeForAddresses = await this.stakeContract.getPersonalStakeForAddresses(creator)
@@ -196,8 +195,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
 
         await assertRevert(
           this.stakeContract.stake(web3.utils.toWei('1', 'ether'), dummyData),
-            // FIXME express expected error message
-            // 'Stake required'
+          // FIXME express expected error message
+          // 'Stake required'
         )
       })
     })
@@ -260,8 +259,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
         it('should revert', async function () {
           await assertRevert(
             this.stakeContract.unstake(web3.utils.toWei('1', 'ether'), dummyData),
-              // FIXME express expected error message
-              // 'The unstake amount does not match the current stake'
+            // FIXME express expected error message
+            // 'The unstake amount does not match the current stake'
           )
         })
       })
@@ -277,8 +276,8 @@ export default function shouldBehaveLikeERC900BasicStakeContract(accounts, lockI
 
           await assertRevert(
             this.stakeContract.unstake(web3.utils.toWei('10', 'ether'), dummyData),
-              // FIXME express expected error message
-              // 'Unable to withdraw stake'
+            // FIXME express expected error message
+            // 'Unable to withdraw stake'
           )
         })
       })
