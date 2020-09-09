@@ -29,7 +29,7 @@ module.exports = async function (deployer, network, accounts) {
     await deployer.deploy(ERC900BasicStakeContract, croTokenOnMainnet, ONE_YEAR_IN_SECONDS * 2, { gas: 6721970 })
     await deployer.deploy(ERC900BasicStakeContract, croTokenOnMainnet, ONE_YEAR_IN_SECONDS * 3, { gas: 6721970 })
     await deployer.deploy(ERC900BasicStakeContract, croTokenOnMainnet, ONE_YEAR_IN_SECONDS * 4, { gas: 6721970 })
-    console.log('all deployed on ropsten~~~')
+    console.log('all deployed on mainnet~~~')
 
   }
 }
