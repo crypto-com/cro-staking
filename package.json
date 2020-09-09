@@ -1,7 +1,7 @@
 {
-  "name": "contract.erc-900",
+  "name": "cro-staking",
   "version": "1.0.0",
-  "description": "ERC-900 Contracts",
+  "description": "ERC20 token staking contracts following ERC-900 specifications targeted for CRO(ERC20) staking",
   "scripts": {
     "clean": "rm -rf build",
     "migrate": "npm run lint && ./node_modules/.bin/truffle migrate --network ganache --reset",
@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codex-protocol/contract.erc-900"
+    "url": "https://github.com/crypto-com/cro-staking"
   },
-  "author": "chain@crypto.com",
+  "author": "defi@crypto.com",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/codex-protocol/contract.erc-900/issues"
+    "url": "https://github.com/crypto-com/cro-staking/issues"
   },
-  "homepage": "https://github.com/codex-protocol/contract.erc-900",
+  "homepage": "https://github.com/crypto-com/cro-staking",
   "devDependencies": {
     "@codex-protocol/eslint-config-base": "latest",
     "@codex-protocol/eslint-config-truffle": "latest",
