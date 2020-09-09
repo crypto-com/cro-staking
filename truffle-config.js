@@ -50,10 +50,11 @@ module.exports = {
     //   gasPrice: 5000000000, // 5 gwei
     // },
     // mainnet: {
-    //   provider: infuraProvider('rinkeby'),
-    //   network_id: '1',
-    //   gasPrice: 50000000000, // 50 gwei
-    // },
+    //   provider: infuraProvider("mainnet"),
+    //   network_id: "1",
+    //   gas: 6000000,
+    //   gasPrice: 125000000000, // in wei
+    // }
   },
   compilers: {
     solc: {
