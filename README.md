@@ -1,4 +1,4 @@
-# CRO Defi Swap | ERC 900 Contracts
+# DeFi Swap | ERC 900 Contracts
 [![Build Status](https://github.com/crypto-com/cro-staking/actions/runs/237971754)](https://github.com/crypto-com/cro-staking/actions/runs/237971754)
 
 *Inspired by [Codex Protocol | ERC 900 Contracts](https://github.com/codex-protocol/contract.erc-900)*
