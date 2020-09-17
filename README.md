@@ -27,3 +27,11 @@ All files                      |      100 |    83.33 |      100 |      100 |    
 -------------------------------|----------|----------|----------|----------|----------------|
 
 ```
+
+## Deploy contracts
+1. uncomment relevant network sessions in truffle-config.js
+2. Populate .env with INFURA_API_KEY and MNEMONIC
+3. 
+- 3.1. if you are deploying from the start, run ```yarn deploy-on-ropsten``` ; 
+- 3.2. or if you are only deploying delta, add files under our/cro-staking/migrations/* with next sequence number, 
+  and run ```./node_modules/.bin/truffle migrate --network $network_name```
